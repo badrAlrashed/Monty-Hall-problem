@@ -1,0 +1,94 @@
+
+# Online Python - IDE, Editor, Compiler, Interpreter
+import random
+
+def simulation(number_of_attempts,number_of_doors, switch_flag):
+   
+    #intial simulation
+    attempts_counter = 0
+    attempts = range(number_of_attempts)
+    doors = range(1, number_of_doors+1)
+    precentage = 0.0
+    points = 0.0
+    #loop
+    for attempt in attempts:
+        door_one,door_two,door_three = problem_set_up(doors)
+        attempts_counter = attempts_counter + 1
+        if switch_flag:
+           door_one,door_two,door_three = switch_door(door_one,door_two,door_three)
+        #check if correct door
+        win_flag = correct_pick(door_one,door_two,door_three)
+        if win_flag:
+            points = points + 1
+        precentage = round((points / attempts_counter), 2) * 100
+        #print("attempt {} is {} and current precentage is {}".format(attempt,win_flag,precentage))
+    return precentage
+    
+def problem_set_up(doors):
+    #intial_doors
+    #[prized, picked, opened]
+    door_one = [False, False, False]
+    door_two = [False, False, False]
+    door_three = [False, False, False]
+    
+    #pick_door_with_the_prize
+    random_door = random.choice(doors)
+    if random_door == 1:
+        door_one[0] = True
+    elif random_door == 2:
+        door_two[0] = True
+    elif random_door == 3:
+        door_three[0] = True
+    else:
+        print("Error: random door code is incorrect")
+    
+    #pick_door
+    random_door = random.choice(doors)
+    if random_door == 1:
+        door_one[1] = True
+    elif random_door == 2:
+        door_two[1] = True
+    elif random_door == 3:
+        door_three[1] = True
+    else:
+        print("Error: random door picking code is incorrect")
+    
+    #open_wrong_door
+    if not ( door_one[0] or door_one[1]):
+        door_one[2] = True
+    elif not (door_two[0] or door_two[1]):
+        door_two[2] = True
+    elif not (door_three[0] or door_three[1]):
+        door_three[2] = True
+    else:
+        print("Error: wrong door code is incorrect")
+    return door_one,door_two,door_three
+
+def switch_door(door_one,door_two,door_three):
+    if  not door_one[2]:
+        door_one[1] = not door_one[1]
+    elif not door_two[2]:
+        door_two[1] = not door_two[1]
+    elif not door_three[2]:
+        door_three[1] = not door_three[1]
+    else:
+        print("Error: switching door code is incorrect")
+    return door_one,door_two,door_three
+    
+def correct_pick(door_one,door_two,door_three):
+    if door_one[0] and door_one[1] and not door_one[2]:
+        return True
+    if door_two[0] and door_two[1] and not door_two[2]:
+        return True
+    if door_three[0] and door_three[1] and not door_three[2]:
+        return True
+    else:
+        return False
+
+#simulation(number_of_attempts,number_of_doors, switch_flag)
+print("Numbered of attempts are {} and Final precentage is {}".format(100, simulation(100, 3, False))) 
+print("Numbered of attempts when always switching Door are {} and Final precentage is {}".format(100, simulation(100, 3, True))) 
+
+
+
+    
