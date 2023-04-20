@@ -1,0 +1,33 @@
+
+# Online Python - IDE, Editor, Compiler, Interpreter
+
+import random
+
+def monty_hall(switch):
+    doors = [1, 2, 3]
+    car = random.choice(doors)
+    first_choice = random.choice(doors)
+    doors.remove(first_choice)
+    if first_choice == car:
+        reveal = random.choice(doors)
+    else:
+        doors.remove(car)
+        reveal = doors[0]
+    if switch:
+        doors = [1, 2, 3]
+        doors.remove(first_choice)
+        doors.remove(reveal)
+        second_choice = doors[0]
+    else:
+        second_choice = first_choice
+    return second_choice == car
+
+def simulate(switch):
+    wins = 0
+    for i in range(100):
+        if monty_hall(switch):
+            wins += 1
+    return wins/100
+
+print("Winning percentage when switching:", simulate(True))
+print("Winning percentage when not switching:", simulate(False))
